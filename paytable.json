@@ -1,17 +1,4 @@
-let mbp = 0; //monthly base pay
-let yoas = 0; //years of active service
-let basepay = 0; //base pay as calculated
-
-const mbpInput  = document.getElementById('mbp');
-const yoasInput = document.getElementById('yoas');
-const ivspInput = document.getElementById('ivsp');
-const vspInput  = document.getElementById('vsp');
-
-const paygradeInput = document.getElementById('paygrade')
-const yoas2Input    = document.getElementById('yoas2');
-const basepayInput  = document.getElementById('basepay');
-
-let payTable = {
+{
     "E9": {
       "10": 6657.30,
       "12": 6807.90,
@@ -206,55 +193,3 @@ let payTable = {
       "16": 5031.30
     }
   }
-
-
-mbpInput.addEventListener('change',computeIvsp);
-yoasInput.addEventListener('change',()=>{
-    computeIvsp();
-    yoas2Input.value=yoas;
-    computeBasepay();
-});
-
-paygradeInput.addEventListener('change',computeBasepay);
-yoas2Input.addEventListener('change',()=>{
-    computeBasepay();
-    yoasInput.value=yoas2Input.value;
-    computeIvsp();
-})
-
-
-function computeIvsp() {
-    let ivsp=0;
-    mbp = mbpInput.value;
-    yoas = yoasInput.value;
-
-    if (yoas<=5 || yoas>20) {
-        ivspInput.value="Not Eligible";
-        vspInput.value="Not Eligible";
-    }
-    else {
-        ivsp = mbp*12*yoas*0.1
-        ivspInput.value=ivsp;
-        vspInput.value=2*ivsp;
-    }
-}
-
-
-function computeBasepay() {
-    let basepay=0;
-    let breakpoints = [0,2,3,4,6,8,10,12,14,16]; //years of service breakpoints
-    let years = yoas2Input.value;
-    let yearCategory = 0;
-    breakpoints.forEach(x => {
-        if(x<=years){yearCategory=x;}
-    });
-
-    console.log(years, yearCategory, payTable[paygradeInput.value][yearCategory]);
-    basepayInput.value = payTable[paygradeInput.value][yearCategory];
-}
-
-
-function importBasePay() {
-    mbpInput.value = basepayInput.value;
-    computeIvsp();
-}
